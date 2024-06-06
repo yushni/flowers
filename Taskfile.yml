@@ -3,4 +3,4 @@ version: '3'
 tasks:
   build:
     cmds:
-      - GOOS=linux GOARCH=amd64 go build -o bin/app
+      - GOOS=linux GOARCH=amd64 go build -o app
