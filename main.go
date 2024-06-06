@@ -36,21 +36,24 @@ func sendEmail(m *mailer) http.HandlerFunc {
 
 		err := r.ParseForm()
 		if err != nil {
-			fmt.Fprintf(w, "parse error: %s", err)
 			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintf(w, "parse error: %s", err)
 			return
 		}
 
 		text := r.FormValue("text")
 		if text == "" {
-			fmt.Fprint(w, "empty text")
 			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, "empty text")
 			return
 		}
 
 		if err := m.sendEmail(text); err != nil {
-			fmt.Fprintf(w, "send email: %s", err)
+			log.Println("fail to send email", err)
+			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
+
+		fmt.Fprint(w, "success")
 	}
 }
