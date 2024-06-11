@@ -16,16 +16,9 @@ func main() {
 
 	m := newMailer(recipient, username, password, sendEmailDisabled)
 
-	http.HandleFunc("/", renderForm)
+	http.Handle("/", http.FileServer(http.Dir("./public")))
 	http.HandleFunc("/subscribe", sendEmail(m))
 	log.Fatal(http.ListenAndServe(":80", nil))
-}
-
-func renderForm(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("index.html"))
-	if err := tmpl.Execute(w, nil); err != nil {
-		log.Printf("template error: %s", err)
-	}
 }
 
 func sendEmail(m *mailer) http.HandlerFunc {
