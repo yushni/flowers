@@ -12,8 +12,9 @@ func main() {
 	recipient := os.Getenv("SMTP_RECIPIENT")
 	username := os.Getenv("SMTP_USERNAME")
 	password := os.Getenv("SMTP_PASSWORD")
+	sendEmailDisabled := os.Getenv("SEND_EMAIL_DISABLED") == "true"
 
-	m := newMailer(recipient, username, password)
+	m := newMailer(recipient, username, password, sendEmailDisabled)
 
 	http.HandleFunc("/", renderForm)
 	http.HandleFunc("/subscribe", sendEmail(m))
@@ -54,6 +55,9 @@ func sendEmail(m *mailer) http.HandlerFunc {
 			return
 		}
 
-		fmt.Fprint(w, "success")
+		tmpl := template.Must(template.ParseFiles("subscribe.html"))
+		if err := tmpl.Execute(w, nil); err != nil {
+			log.Printf("template error: %s", err)
+		}
 	}
 }

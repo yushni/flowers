@@ -1,10 +1,243 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Semycvitka</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin-top: 5vh;
+            margin-bottom: 5vh;
+
+            background-color: ivory;
+
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .offer__main-text {
+            display: flex;
+            flex-direction: column;
+
+            margin: 0 20%;
+
+            text-align: justify;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 22px;
+        }
+
+        .shop {
+            font-weight: bold;
+            color: mediumseagreen;
+        }
+
+        .shop:hover {
+            color: black;
+        }
+
+        .offer__form {
+            display: flex;
+            justify-content: center;
+
+            margin-top: 5vh;
+
+            background-color: mediumseagreen;
+
+            color: ivory;
+        }
+
+        .offer__block {
+            display: flex;
+            flex-direction: column;
+            
+            align-items: center;
+
+            margin-top: 2vh;
+            margin-bottom: 2vh;
+            padding: 15px;
+
+            border: 2px solid ivory;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"] {
+            width: 384px;
+            height: 32px;
+
+            padding: 4px;
+
+            border: 1px solid ivory;
+            border-radius: 0;
+
+            font-size: 18px;
+        }
+
+        input[type="tel"] {
+            width: 256px;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: black;
+        }
+
+        .card-container,
+        .wish-container {
+            width: 384px;
+            height: 128px;
+            resize: none;
+            box-sizing: border-box;
+            overflow: auto;
+
+            padding: 4px;
+
+            border: 1px solid ivory;
+            border-radius: 0;
+
+            font-size: 18px;
+            line-height: 22px;
+        }
+
+        .form__price {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .price-container {
+            margin-right: 10px;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"] + label:before {
+            content: "";
+
+            display: inline-block;
+
+            width: 20px;
+            height: 20px;
+
+            margin-right: 8px;
+
+            border: 1px solid ivory;
+            vertical-align: middle;
+        }
+
+        input[type="radio"] + label:hover:before {
+            background-color: ivory;
+        }   
+
+        input[type="radio"]:checked + label:before {
+            content: "✔";
+
+            box-sizing: border-box;
+
+            padding-bottom: 2px;
+            padding-left: 2px;
+
+            background-color: ivory;
+
+            color: black;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            height: 20px;
+
+            margin-right: 5px;
+
+            border: 1px solid ivory;
+            vertical-align: middle;
+        }
+
+        .form__btn {
+            width: 256px;
+            height: 64px;
+
+            margin-top: 32px;
+
+            background-color: ivory;
+            border: 1px solid black;
+
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .form__btn:hover {
+            background-color: black;
+            border: 1px solid ivory;
+
+            color: ivory;
+
+            cursor: pointer;
+        }
+
+        .footer {
+            margin-top: 5vh;
+
+            text-align: center;
+        }
+    </style>
+</head>
 <body>
-<form action="/subscribe" method="post">
-    <label for="text">Email:</label><br>
-    <input type="text" id="text" name="text" required><br>
-    <input type="submit" value="Subscribe">
-</form>
+    <div class="offer">
+        <div class="offer__main-text">
+            <p>Ласкаво просимо до квіткового магазину <a class="shop" href="https://www.instagram.com/semycvitka/" target="_blank"><span>Semycvitka</span></a>! Ми, спільно з молодятами, створили цю сторінку, щоб ви могли замовити квіткові композиції, які ми будемо від вашого імені по черзі доставляти Анні та Юрію після їхнього весілля. Це дозволить їм справді насолоджуватися свіжими квітами тривалий час, уникнувши ситуації, коли всі квіти зів'януть одночасно.</p>
+            <p>Ми вже встигли продуктивно попрацювати та врахували всі квіткові побажання Анни та Юрія. Всі наші букети будуть складатися з сезонних квітів. Щоб продовжити свято для молодят, вам потрібно всього лише виконати кілька простих кроків:</p>
+        </div>
+        <div class="offer__form">
+            <form action="/subscribe" method="post">
+                <div class="offer__block">
+                    <p>Напишіть, будь ласка, від кого даруєте букетик:</p>
+                    <input type="text" name="name" placeholder="Ваше ім'я">
+                    <p>Разом з квітами поїде й листівка. Напишіть, будь ласка, ваше побажання молодятам:</p>
+                    <textarea class="card-container" type="text" name="card" placeholder="Текст побажання"></textarea>
+                    <p>Букет на яку суму Ви бажаєте подарувати?</p>
+                    <div class="form__price">
+                        <div class="price-container">
+                            <input type="radio" id="custom" name="price" value="custom">
+                            <label for="custom">Ваша сума:</label>
+                            <input type="number" id="customPrice" name="customPrice" value="500" min="500" step="100"><br>
+                        </div>
+                        <div class="price-container">
+                            <input type="radio" id="750" name="price" value="750">
+                            <label for="750">750₴</label><br>
+                        </div>
+                        <div class="price-container">
+                            <input type="radio" id="1000" name="price" value="1000">
+                            <label for="1000">1000₴</label><br>
+                        </div>
+                        <div class="price-container">
+                            <input type="radio" id="1250" name="price" value="1250">
+                            <label for="1250">1250₴</label><br>
+                        </div>
+                        <div class="price-container">
+                            <input type="radio" id="1500" name="price" value="1500">
+                            <label for="1500">1500₴</label><br>
+                        </div>
+                    </div>
+                    <p>Вкажіть ваш номер телефону, щоб ми могли з вами зв'язатися:</p>
+                    <input type="tel" name="phone" placeholder="+38">
+                    <p>Якшо ви маєте якісь конкретні чи додаткові побажання, напишіть нам про це в коментарі:</p>
+                    <textarea class="wish-container" type="text" name="wish" placeholder="Просто зробіть гарно :)"></textarea>
+                    <button class="form__btn" type="submit">Замовити</button>
+                </div>
+            </form>
+        </div>
+        <div class="offer__main-text footer">
+            <p>У разі чого, контактуйте нас самостійно</p>
+            <p>Instagram: <a class="shop" href="https://www.instagram.com/semycvitka/" target="_blank"><span>Semycvitka</span></a></p>
+            <p>Facebook: <a class="shop" href="https://www.facebook.com/semycvitka" target="_blank"><span>Semycvitka</span></a></p>
+            <p>Або ж за телефоном <a href="tel:+380932568752">+380932568752</a></p>
+        </div>
+    </div>
 </body>
 </html>
