@@ -58,18 +58,14 @@ func sendEmail(m *mailer) http.HandlerFunc {
 			fmt.Fprint(w, "empty text")
 			return
 		}
-		//
-		//if err := m.sendEmail(text); err != nil {
-		//	log.Println("fail to send email", err)
-		//	w.WriteHeader(http.StatusInternalServerError)
-		//	return
-		//}
 
-		fmt.Println("email sent", text)
+		if err := m.sendEmail(text); err != nil {
+			log.Println("fail to send email", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		log.Println("email sent", text)
 		return
-
-		//if err := subscribe.Execute(w, nil); err != nil {
-		//	log.Printf("template error: %s", err)
-		//}
 	}
 }
