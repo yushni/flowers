@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semycvitka</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+
+            line-height: 1.6;
+
+            background-color: ivory;
+        }
+
+        div.desktop-container {
+            display: unset;
+        }
+
+        div.main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            width: 100%;
+        }
+
+        div.photo-container {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+            height: 100vh;
+
+            border-bottom: 1px solid rgb(60, 179, 113, .5);
+        }
+
+        div.photo-container::before {
+            content: "";
+
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background-image: url('https://wedding-flowers-131.s3.eu-central-1.amazonaws.com/A-240.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: 50% 20%;
+            opacity: .6;
+        }
+
+        div.photo-container::after {
+            content: "";
+
+            position: absolute;
+            z-index: 2;
+            
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background: rgba(0, 0, 0, .4);
+        }
+
+        div.form-container-desktop {
+            z-index: 3;
+
+            display: flex;
+            
+            width: 80%;
+            max-height: 100vh;
+            transform: scale(.95);
+
+            margin: 0 auto;
+        }
+
+        div.form__input-container {
+            width: 50%;
+            height: 100%;
+            max-height: 100vh;
+
+            padding: 2.5%;
+
+            background-color: rgba(38, 41, 38, 0.43);
+            
+            border-top-left-radius: 100px;
+        }
+
+        div.form__photo-container {
+            position: relative;
+            
+            width: 50%;
+            height: auto;
+            max-height: 100vh;
+        }
+
+        div.form__photo-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background-image: url('https://wedding-flowers-131.s3.eu-central-1.amazonaws.com/A-154.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: 50% 20%;
+            opacity: .95;
+
+            border-bottom-right-radius: 100px;
+        }
+
+        form.form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            padding: 25px 0 2.5px 10px;
+
+            font-family: 'Comfortaa', cursive;
+            font-size: 16px;
+            color: ivory;
+        }
+
+        input, textarea {
+            padding: 10px;
+
+            font-family: 'Comfortaa', cursive;
+            font-size: 16px;
+
+            border: 1px solid ivory;
+            border-radius: 5px;
+        }
+
+        input:hover, textarea:hover {
+            border-color: unset;
+            outline: mediumseagreen;
+        }
+
+        input:active, textarea:active, input:focus, textarea:focus {
+            border-color: unset;
+            outline: mediumseagreen;
+        }
+
+        textarea {
+            height: 150px;
+
+            resize: none;
+        }
+
+        div.form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-top: 25px;
+        }
+
+        div.form-row div {
+            flex: 1;
+        }
+
+        div.form-row div:first-child {
+            margin-right: 10px;
+        }
+
+        div.form-row div:last-child {
+            margin-left: 10px;
+        }
+
+        div.form-row div input {
+            width: 100%;
+        }
+
+        .form-btn {
+            cursor: pointer;
+
+            display: inline-block;
+
+            width: 100%;
+        
+            text-align: center;
+
+            margin: 4px 0;
+            padding: 15px 30px;
+            
+            font-family: 'Comfortaa', cursive;
+            font-size: 16px;
+            text-decoration: none;
+            color: ivory;
+
+            background-color: #FF7f7F;
+            border: none;
+            border-radius: 5px;
+
+            transition: background-color 0.5s ease;
+        }
+
+        .form-btn:hover {
+            background-color: #FF4F4F;
+        }
+
+        div.form__photo-container {
+            display: block;
+        }
+
+        @media screen and (max-width: 767px) {
+            div.desktop-container {
+                display: none;
+            }
+
+            div.photo-container::before {
+                background-position: 45% 20%;
+                opacity: .8;
+            }
+
+            div.form-container-desktop {
+                transform: unset;
+            }
+
+            div.form__input-container { 
+                width: 100%;
+
+                border-radius: 25px;
+            }
+
+            label {
+                padding-bottom: 12px;
+
+                font-size: 12px;
+            }
+
+            input, textarea {
+                font-size: 12px;
+            }
+
+            textarea {
+                height: 100px;
+            }
+
+            div.form-row {
+                flex-direction: column;
+            }
+
+            div.form-row div {
+                width: 100%;
+            }
+
+            div.form-row div:first-child {
+                margin-right: 0;
+            }
+
+            div.form-row div:last-child {
+                margin-top: 25px;
+                margin-left: 0;
+            }   
+
+            div.form__photo-container {
+                display: none;
+            }
+
+            .form-btn {
+                padding: 10px 20px;
+
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="photo-container">
+            <div class="form-container-desktop">
+                <div class="form__input-container">
+                    <form class="form" action="/subscribe" method="post">
+                        <label for="name">Від кого даруєте букетик?</label>
+                        <input type="text" id="name" name="name" placeholder="Ім'я замовника" required>
+                        <label for="card">До букетика ми додамо листівку. Що побажаєте молодятам?</label>
+                        <textarea type="text" id="card" name="card" placeholder="Текст побажання..." required></textarea>
+                        <div class="form-row">
+                            <div>
+                                <label for="price">На яку суму даруємо?</label>
+                                <input style="text-align: center;" type="number" id="price" name="price" placeholder="Сума замовлення" value="1000" min="500" step="50" required>
+                            </div>
+                            <div>
+                                <label for="phone">Телефон замовника</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+38..." required>
+                            </div>
+                        </div>
+                        <label for="wish">Чи маєте додаткові побажання?</label>
+                        <textarea type="text" id="wish" name="wish" placeholder="Зробіт так, аби молодєта сє тішили :)" required>Зробіт так, аби молодєта сє тішили :)</textarea>
+                        <button class="form-btn" type="submit">Замовити квіти</button>
+                    </form>
+                </div>
+                <div class="form__photo-container"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var form = document.querySelector('.form');
+        var name = document.getElementById('name');
+        var card = document.getElementById('card');
+        var price = document.getElementById('price');
+        var phone = document.getElementById('phone');
+        var wish = document.getElementById('wish');
+    
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+    
+            var text = 'Name: ' + name.value + ', Card: ' + card.value + ', Price: ' + price.value + ', Phone: ' + phone.value + ', Wish: ' + wish.value;
+    
+            fetch('/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'text=' + encodeURIComponent(text),
+            }).then(function(response) {
+                if(response.ok) {
+                    window.location.href = '/thank_you';
+                } else {
+                    throw new Error('Request failed: ' + response.status);
+                }
+            }).catch(function(error) {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

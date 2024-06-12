@@ -4,4 +4,3 @@ tasks:
   build:
     cmds:
       - GOOS=linux GOARCH=amd64 go build -o app
-      - GOOS=darwin GOARCH=amd64 go build -o app-mac
