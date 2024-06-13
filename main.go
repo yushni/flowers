@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -9,10 +8,11 @@ import (
 )
 
 var (
-	index    = template.Must(template.ParseFiles("public/index.html"))
-	thankYou = template.Must(template.ParseFiles("public/thank-you.html"))
-	form     = template.Must(template.ParseFiles("public/form.html"))
-	rules    = template.Must(template.ParseFiles("public/rules.html"))
+	indexTmpl    = template.Must(template.ParseFiles("public/index.html", "public/heart.ico"))
+	thankYouTmpl = template.Must(template.ParseFiles("public/thank-you.html", "public/heart.ico"))
+	formTmpl     = template.Must(template.ParseFiles("public/form.html", "public/heart.ico"))
+	rulesTmpl    = template.Must(template.ParseFiles("public/rules.html", "public/heart.ico"))
+	errTmpl      = template.Must(template.ParseFiles("public/error.html", "public/heart.ico"))
 )
 
 func main() {
@@ -23,9 +23,9 @@ func main() {
 
 	m := newMailer(recipient, username, password, sendEmailDisabled)
 
-	http.HandleFunc("GET /", staticHandler(index))
-	http.HandleFunc("GET /form", staticHandler(form))
-	http.HandleFunc("GET /rules", staticHandler(rules))
+	http.HandleFunc("GET /", staticHandler(indexTmpl))
+	http.HandleFunc("GET /form", staticHandler(formTmpl))
+	http.HandleFunc("GET /rules", staticHandler(rulesTmpl))
 	http.HandleFunc("POST /thank-you", sendEmail(m))
 
 	if err := http.ListenAndServe(":80", nil); err != nil {
@@ -43,10 +43,8 @@ func staticHandler(t *template.Template) http.HandlerFunc {
 
 func sendEmail(m *mailer) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := r.ParseForm()
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			fmt.Fprintf(w, "parse error: %s", err)
+		if err := r.ParseForm(); err != nil {
+			staticErrorHandler(err)(w, r)
 			return
 		}
 
@@ -59,18 +57,27 @@ func sendEmail(m *mailer) http.HandlerFunc {
 		}
 
 		if err := body.validate(); err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			fmt.Fprintf(w, "validation error: %s", err)
+			staticErrorHandler(err)(w, r)
 			return
 		}
 
 		if err := m.sendEmail(body.string()); err != nil {
-			log.Println("fail to send email", err)
-			w.WriteHeader(http.StatusInternalServerError)
+			staticErrorHandler(err)(w, r)
 			return
 		}
 
-		staticHandler(thankYou)(w, r)
+		staticHandler(thankYouTmpl)(w, r)
 		return
+	}
+}
+
+func staticErrorHandler(err error) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println(err)
+
+		w.WriteHeader(http.StatusInternalServerError)
+		if err := errTmpl.Execute(w, nil); err != nil {
+			log.Printf("template error: %s", err)
+		}
 	}
 }

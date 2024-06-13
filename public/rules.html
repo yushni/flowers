@@ -6,6 +6,7 @@
     <title>Semycvitka</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" href="./heart.ico" type="image/x-icon">
     <style>
         * {
             margin: 0;
@@ -100,7 +101,7 @@
 
             width: 100%;
 
-            text-align: justify;
+            text-align: center;
 
             padding: 20px;
 
@@ -164,7 +165,7 @@
             }
 
             div.photo-container::before {
-                background-position: 45% 20%;
+                background-position: 50% 20%;
                 opacity: .8;
             }
 
@@ -176,9 +177,25 @@
 
             .form-btn {
                 position: absolute;
-                bottom: 35px;
+                bottom: 5.5vh;
 
                 max-width: 60vw;
+            }
+        }
+
+        @media screen and (max-width: 410px) {
+            p.info-text {
+                text-align: justify;
+
+                padding: 16px;
+
+                font-size: 14px;
+            }
+
+            .form-btn {
+                padding: 10px 20px;
+
+                font-size: 14px;
             }
         }
     </style>
@@ -191,8 +208,8 @@
                     Ласкаво просимо до квіткового магазину <a class="brand" href="https://www.instagram.com/semycvitka/" target="_blank"><span>Semycvitka</span></a> !
                     <br><br>Ми, спільно з молодятами, створили цю сторінку, щоб ви могли замовити квіткові композиції, які ми будемо від вашого імені по черзі доставляти Анні та Юрію після їхнього весілля.
                     <br><br>Це дозволить їм справді насолоджуватися свіжими квітами тривалий час, уникнувши ситуації, коли всі квіти зів'януть одночасно.
-                    <br><br>Ми вже встигли продуктивно попрацювати та врахували всі квіткові побажання Анни та Юрія.
-                    <br><br>Всі наші букети будуть складатися з сезонних квітів. Щоб продовжити свято для молодят, вам потрібно всього лише виконати кілька простих кроків...
+                    <br><br>Ми вже встигли продуктивно попрацювати та врахували всі квіткові побажання Юрія та Анни.
+                    <br><br>Щоб продовжити свято для молодят, вам потрібно всього лише виконати кілька простих кроків...
                 </p>
                 <a href="/form" class="form-btn">Далі</a>
             </div>
