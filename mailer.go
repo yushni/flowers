@@ -24,12 +24,12 @@ func newMailer(recipient, username, password string, disabled bool) *mailer {
 	}
 }
 
-func (e *mailer) sendEmail(text string) error {
+func (e *mailer) sendEmail(body string) error {
 	if e.disabled {
 		return nil
 	}
 
-	err := smtp.SendMail(address, e.auth, "", []string{e.recipient}, []byte(text))
+	err := smtp.SendMail(address, e.auth, "", []string{e.recipient}, []byte(body))
 	if err != nil {
 		return fmt.Errorf("send mail: %w", err)
 	}

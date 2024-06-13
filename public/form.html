@@ -57,7 +57,7 @@
             width: 100%;
             height: 100%;
 
-            background-image: url('https://wedding-flowers-131.s3.eu-central-1.amazonaws.com/A-240.jpg');
+            background-image: url('https://wedding-flowers-131.s3.eu-central-1.amazonaws.com/A-240.jpeg');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: 50% 20%;
@@ -120,7 +120,7 @@
             width: 100%;
             height: 100%;
 
-            background-image: url('https://wedding-flowers-131.s3.eu-central-1.amazonaws.com/A-154.jpg');
+            background-image: url('https://wedding-flowers-131.s3.eu-central-1.amazonaws.com/A-154.jpeg');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: 50% 20%;
@@ -292,7 +292,7 @@
         <div class="photo-container">
             <div class="form-container-desktop">
                 <div class="form__input-container">
-                    <form class="form" action="/subscribe" method="post">
+                    <form class="form" action="/thank-you" method="post">
                         <label for="name">Від кого даруєте букетик?</label>
                         <input type="text" id="name" name="name" placeholder="Ім'я замовника" required>
                         <label for="card">До букетика ми додамо листівку. Що побажаєте молодятам?</label>
@@ -316,35 +316,5 @@
             </div>
         </div>
     </div>
-    <script>
-        var form = document.querySelector('.form');
-        var name = document.getElementById('name');
-        var card = document.getElementById('card');
-        var price = document.getElementById('price');
-        var phone = document.getElementById('phone');
-        var wish = document.getElementById('wish');
-    
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-    
-            var text = 'Name: ' + name.value + ', Card: ' + card.value + ', Price: ' + price.value + ', Phone: ' + phone.value + ', Wish: ' + wish.value;
-    
-            fetch('/subscribe', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'text=' + encodeURIComponent(text),
-            }).then(function(response) {
-                if(response.ok) {
-                    window.location.href = '/thank_you';
-                } else {
-                    throw new Error('Request failed: ' + response.status);
-                }
-            }).catch(function(error) {
-                console.error('Error:', error);
-            });
-        });
-    </script>
 </body>
 </html>

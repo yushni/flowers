@@ -10,7 +10,7 @@ import (
 
 var (
 	index    = template.Must(template.ParseFiles("public/index.html"))
-	thankYou = template.Must(template.ParseFiles("public/thank_you.html"))
+	thankYou = template.Must(template.ParseFiles("public/thank-you.html"))
 	form     = template.Must(template.ParseFiles("public/form.html"))
 	rules    = template.Must(template.ParseFiles("public/rules.html"))
 )
@@ -26,9 +26,7 @@ func main() {
 	http.HandleFunc("GET /", staticHandler(index))
 	http.HandleFunc("GET /form", staticHandler(form))
 	http.HandleFunc("GET /rules", staticHandler(rules))
-	http.HandleFunc("GET /thank_you", staticHandler(thankYou))
-
-	http.HandleFunc("POST /subscribe", sendEmail(m))
+	http.HandleFunc("POST /thank-you", sendEmail(m))
 
 	if err := http.ListenAndServe(":80", nil); err != nil {
 		log.Fatalf("fail to start server: %s", err)
@@ -52,20 +50,27 @@ func sendEmail(m *mailer) http.HandlerFunc {
 			return
 		}
 
-		text := r.FormValue("text")
-		if text == "" {
+		body := emailBody{
+			name:  r.FormValue("name"),
+			card:  r.FormValue("card"),
+			price: r.FormValue("price"),
+			phone: r.FormValue("phone"),
+			wish:  r.FormValue("wish"),
+		}
+
+		if err := body.validate(); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			fmt.Fprint(w, "empty text")
+			fmt.Fprintf(w, "validation error: %s", err)
 			return
 		}
 
-		if err := m.sendEmail(text); err != nil {
+		if err := m.sendEmail(body.string()); err != nil {
 			log.Println("fail to send email", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		log.Println("email sent", text)
+		staticHandler(thankYou)(w, r)
 		return
 	}
 }
