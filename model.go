@@ -5,25 +5,25 @@ import (
 	"fmt"
 )
 
-type emailBody struct {
-	name, card, price, phone, wish string
+type order struct {
+	Name, Card, Price, Phone, Wish string
 }
 
-func (e emailBody) validate() error {
+func (e order) validate() error {
 	var errs []error
-	if e.name == "" {
+	if e.Name == "" {
 		errs = append(errs, fmt.Errorf("name is required"))
 	}
-	if e.card == "" {
+	if e.Card == "" {
 		errs = append(errs, fmt.Errorf("card is required"))
 	}
-	if e.price == "" {
+	if e.Price == "" {
 		errs = append(errs, fmt.Errorf("price is required"))
 	}
-	if e.phone == "" {
+	if e.Phone == "" {
 		errs = append(errs, fmt.Errorf("phone is required"))
 	}
-	if e.wish == "" {
+	if e.Wish == "" {
 		errs = append(errs, fmt.Errorf("wish is required"))
 	}
 
@@ -33,7 +33,7 @@ func (e emailBody) validate() error {
 	return nil
 }
 
-func (e emailBody) string() string {
+func (e order) string() string {
 	return fmt.Sprintf(`
 		Нове замовлення
 		Ім'я: %s
@@ -41,5 +41,5 @@ func (e emailBody) string() string {
 		Ціна: %s
 		Телефон: %s
 		Побажання: %s
-	`, e.name, e.card, e.price, e.phone, e.wish)
+	`, e.Name, e.Card, e.Price, e.Phone, e.Wish)
 }
