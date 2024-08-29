@@ -22,11 +22,11 @@ func thankYouHandler(m *mailer, s Storage) http.HandlerFunc {
 		}
 
 		body := order{
-			Name:  r.FormValue("Name"),
-			Card:  r.FormValue("Card"),
-			Price: r.FormValue("Price"),
-			Phone: r.FormValue("Phone"),
-			Wish:  r.FormValue("Wish"),
+			Name:  r.FormValue("name"),
+			Card:  r.FormValue("card"),
+			Price: r.FormValue("price"),
+			Phone: r.FormValue("phone"),
+			Wish:  r.FormValue("wish"),
 		}
 
 		if err := body.validate(); err != nil {
@@ -44,7 +44,6 @@ func thankYouHandler(m *mailer, s Storage) http.HandlerFunc {
 			return
 		}
 
-		log.Println("Form processed successfully, rendering thank you page")
 		staticHandler(thankYouTmpl)(w, r)
 		return
 	}

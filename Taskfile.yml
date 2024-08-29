@@ -4,3 +4,8 @@ tasks:
   build:
     cmds:
       - GOOS=linux GOARCH=amd64 go build -o app
+
+  docker-run:
+    cmds:
+      - docker build -t app .
+      - docker run -e POSTGRES_DSN="postgres://postgres:postgres@host.docker.internal:5432/flowers?sslmode=disable" -p 80:80 app
