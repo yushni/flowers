@@ -5,11 +5,13 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: postgres #todo: use passwords from args? .env ?
       POSTGRES_USER: postgres
       POSTGRES_DB: flowers
     networks:
       - app
+    # todo: add healthcheck
+    # todo: add volume to local directory
 
   app:
     build: .
@@ -17,9 +19,13 @@ services:
     ports:
       - "80:80"
     environment:
-        POSTGRES_DSN: "postgres://postgres:postgres@db:5432/flowers?sslmode=disable"
+      # todo: use passwords from args? .env ?
+      POSTGRES_DSN: "postgres://postgres:postgres@db:5432/flowers?sslmode=disable"
     networks:
       - app
+    #todo: mount public directory
+    #todo: check log drivers and logging options
+
 
 networks:
   app:
