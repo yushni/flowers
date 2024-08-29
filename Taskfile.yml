@@ -7,5 +7,5 @@ tasks:
 
   docker-run:
     cmds:
-      - docker build -t app .
-      - docker run -e POSTGRES_DSN="postgres://postgres:postgres@host.docker.internal:5432/flowers?sslmode=disable" -p 80:80 app
+      - docker build -t flowers-app .
+      - docker run -e POSTGRES_DSN="postgres://postgres:postgres@host.docker.internal:5432/flowers?sslmode=disable" -p 80:80 flowers-app
