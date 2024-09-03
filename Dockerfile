@@ -10,6 +10,7 @@ FROM scratch
 
 WORKDIR /app
 
+COPY ./.env ./
 COPY ./public ./public
 COPY --from=builder /app/flowers ./
 

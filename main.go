@@ -29,7 +29,7 @@ func main() {
 		log.Fatalf("fail to parse config: %s", err)
 	}
 
-	db, err := sql.Open("postgres", cfg.PostgresDSN)
+	db, err := sql.Open("postgres", cfg.PostgresDSN())
 	if err != nil {
 		log.Fatalf("fail to connect to db: %s", err)
 	}

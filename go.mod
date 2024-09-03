@@ -4,6 +4,7 @@ go 1.22
 
 require (
 	github.com/caarlos0/env v3.5.0+incompatible
+	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9
 	github.com/pressly/goose/v3 v3.21.1
 )
