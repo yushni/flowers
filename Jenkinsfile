@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'RUN CGO_ENABLED=0 GOOS=linux go build -o flowers .'
+                sh 'CGO_ENABLED=0 GOOS=linux go build -o flowers .'
             }
         }
     }
