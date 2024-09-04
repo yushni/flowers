@@ -5,6 +5,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                sh 'ls'
                 sh 'CGO_ENABLED=0 GOOS=linux go build -o flowers -mod vendor .'
             }
         }
