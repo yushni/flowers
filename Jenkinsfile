@@ -3,9 +3,9 @@ pipeline {
         docker { image 'golang:1.22' }
     }
     stages {
-        stage('Test') {
+        stage('Build') {
             steps {
-                sh 'go version'
+                sh 'RUN CGO_ENABLED=0 GOOS=linux go build -o flowers .'
             }
         }
     }
