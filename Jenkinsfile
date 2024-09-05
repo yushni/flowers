@@ -1,16 +1,20 @@
 pipeline {
-    agent {
-        docker {
-            image 'golang:1.22'
-            args '-u root:root'
-        }
-    }
+    agent any
     stages {
         stage('Build') {
+            agent {
+                docker {
+                    image 'golang:1.22'
+                    args '-u root:root'
+                }
+            }
             steps {
-                sh 'ls'
                 sh 'CGO_ENABLED=0 GOOS=linux go build -buildvcs=false -o flowers .'
-                sh 'ls'
+            }
+        }
+        stage('Docker build') {
+            steps {
+                sh 'docker build -t flowers .'
             }
         }
     }
