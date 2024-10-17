@@ -3,3 +3,6 @@ bin
 db-data
 
 .env
+
+infra/terraform/.*
+infra/terraform/*state*
