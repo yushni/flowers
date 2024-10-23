@@ -21,7 +21,7 @@ function installGit() {
 
 function cloneFlowersRepo() {
   echo "CLONING THE FLOWERS REPO"
-  git clone https://github.com/yushni/flowers.git
+  git clone --branch v0.1 https://github.com/yushni/flowers.git
 }
 
 function runApp() {

@@ -80,6 +80,11 @@ resource "aws_route_table_association" "main_public_1b" {
 resource "aws_route_table" "main_private" {
   vpc_id = aws_vpc.main.id
 
+  route {
+    cidr_block  = "0.0.0.0/0"
+    network_interface_id = aws_instance.nat.primary_network_interface_id
+  }
+
   tags = {
     Name = "${local.resource_prefix}-main-private"
   }
