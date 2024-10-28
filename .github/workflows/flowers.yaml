@@ -25,6 +25,7 @@ jobs:
       - name: Build the Docker image
         run: docker build -t flowers-app .
 
+  # Missing supply chain attestation(s) - розібратись шо то таке
   docker-push:
     if: github.event_name == 'release'
     name: Push Docker image to Docker Hub 🚀
