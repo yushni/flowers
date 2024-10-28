@@ -24,19 +24,9 @@ jobs:
         run: docker build -t flowers-app .
 
   docker-push:
-    runs-on: ubuntu-latest
-    needs: docker-build
-    steps:
-      - uses: actions/checkout@v4
-      - name: Push the Docker image
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-      - run: docker tag flowers-app ghcr.io/3stripes/flowers-app:latest
-      - run: docker push ghcr.io/3stripes/flowers-app:latest
-
-  push_to_registry:
+    if: github.event.release.created
     name: Push Docker image to Docker Hub 🚀
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out the repo 🛎️
         uses: actions/checkout@v4
@@ -51,4 +41,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: yurashni/flowers-app:0.1.0
+          tags: yurashni/flowers-app:{latest,${{ github.event.release.tag }}}
