@@ -43,4 +43,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: yurashni/flowers-app:{latest,${{ github.event.release.tag }}}
+          tags: yurashni/flowers-app:${{ github.event.release.tag }}
