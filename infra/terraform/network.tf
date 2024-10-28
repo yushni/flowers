@@ -15,9 +15,10 @@ resource "aws_internet_gateway" "gw" {
 }
 
 resource "aws_subnet" "main_public_1a" {
-  vpc_id            = aws_vpc.main.id
-  availability_zone = "${var.aws_region}a"
-  cidr_block        = "10.0.1.0/24"
+  vpc_id                  = aws_vpc.main.id
+  availability_zone       = "${var.aws_region}a"
+  cidr_block              = "10.0.1.0/24"
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "${local.resource_prefix}-main-public-1a"
@@ -25,9 +26,10 @@ resource "aws_subnet" "main_public_1a" {
 }
 
 resource "aws_subnet" "main_public_1b" {
-  vpc_id            = aws_vpc.main.id
-  availability_zone = "${var.aws_region}b"
-  cidr_block        = "10.0.2.0/24"
+  vpc_id                  = aws_vpc.main.id
+  availability_zone       = "${var.aws_region}b"
+  cidr_block              = "10.0.2.0/24"
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "${local.resource_prefix}-main-public-1b"
@@ -80,11 +82,6 @@ resource "aws_route_table_association" "main_public_1b" {
 resource "aws_route_table" "main_private" {
   vpc_id = aws_vpc.main.id
 
-  route {
-    cidr_block  = "0.0.0.0/0"
-    network_interface_id = aws_instance.nat.primary_network_interface_id
-  }
-
   tags = {
     Name = "${local.resource_prefix}-main-private"
   }
@@ -115,5 +112,41 @@ resource "aws_security_group" "allow_all_to_all" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_lb" "app" {
+  name               = "${local.resource_prefix}-app"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.allow_all_to_all.id]
+  subnets            = [aws_subnet.main_public_1a.id, aws_subnet.main_public_1b.id]
+
+  tags = {
+    Name = "${local.resource_prefix}-app"
+  }
+}
+
+resource "aws_lb_listener" "app-http" {
+  load_balancer_arn = aws_lb.app.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app.arn
+  }
+}
+
+resource "aws_lb_listener" "app-https" {
+  load_balancer_arn = aws_lb.app.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = data.aws_acm_certificate.semycvitka.arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app.arn
   }
 }

@@ -21,7 +21,7 @@ function installGit() {
 
 function cloneFlowersRepo() {
   echo "CLONING THE FLOWERS REPO"
-  git clone --branch v0.1 https://github.com/yushni/flowers.git
+  git clone --branch 0.1 https://github.com/yushni/flowers.git
 }
 
 function runApp() {
@@ -31,15 +31,10 @@ function runApp() {
   echo "ENTERING THE FLOWERS DIRECTORY"
   cd flowers || exit 1
 
-  echo "Retrieving token from metadata service"
-  TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
-  AVAILABILITY_ZONE=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/availability-zone)
-  REGION="$(echo "$AVAILABILITY_ZONE" | sed 's/[a-z]$//')"
-
   echo "RETRIEVING SMTP PARAMETERS"
-  SMTP_PASSWORD=$(aws ssm get-parameter --name "/smtp/password" --region $REGION --with-decryption --query "Parameter.Value" --output text)
-  SMTP_USERNAME=$(aws ssm get-parameter --name "/smtp/username" --region $REGION --with-decryption --query "Parameter.Value" --output text)
-  SMTP_RECIPIENT=$(aws ssm get-parameter --name "/smtp/recipient" --region $REGION --with-decryption --query "Parameter.Value" --output text)
+  SMTP_PASSWORD=$(aws ssm get-parameter --name "/smtp/password" --region ${REGION} --with-decryption --query "Parameter.Value" --output text)
+  SMTP_USERNAME=$(aws ssm get-parameter --name "/smtp/username" --region ${REGION} --with-decryption --query "Parameter.Value" --output text)
+  SMTP_RECIPIENT=$(aws ssm get-parameter --name "/smtp/recipient" --region ${REGION} --with-decryption --query "Parameter.Value" --output text)
 
   echo "RUN THE APP"
   SMTP_RECIPIENT=$SMTP_RECIPIENT SMTP_PASSWORD=$SMTP_PASSWORD SMTP_USERNAME=$SMTP_USERNAME ./app &
