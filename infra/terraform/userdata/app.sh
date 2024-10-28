@@ -12,38 +12,44 @@ function verifyInstanceHasOutboundConnection() {
   done
 }
 
-function installGit() {
+function installDocker() {
   echo "UPDATING THE SYSTEM"
   yum update -y
-  echo "INSTALLING GIT"
-  yum install git -y
-}
-
-function cloneFlowersRepo() {
-  echo "CLONING THE FLOWERS REPO"
-  git clone --branch 0.1 https://github.com/yushni/flowers.git
+  echo "INSTALLING Docker"
+  yum install docker -y
 }
 
 function runApp() {
-  echo "ADD PERMISSIONS TO THE FLOWERS DIRECTORY"
-  chmod 777 flowers/
-
-  echo "ENTERING THE FLOWERS DIRECTORY"
-  cd flowers || exit 1
-
   echo "RETRIEVING SMTP PARAMETERS"
   SMTP_PASSWORD=$(aws ssm get-parameter --name "/smtp/password" --region ${REGION} --with-decryption --query "Parameter.Value" --output text)
   SMTP_USERNAME=$(aws ssm get-parameter --name "/smtp/username" --region ${REGION} --with-decryption --query "Parameter.Value" --output text)
   SMTP_RECIPIENT=$(aws ssm get-parameter --name "/smtp/recipient" --region ${REGION} --with-decryption --query "Parameter.Value" --output text)
 
+  echo "RUN POSTGRES"
+  docker run postgres -p 5432:5432 \
+    -e POSTGRES_PASSWORD=postgres \
+    -e POSTGRES_USER=postgres \
+    -e POSTGRES_HOST=db \
+    -e POSTGRES_PORT=5432 \
+    -e POSTGRES_DB=postgres
+
   echo "RUN THE APP"
-  SMTP_RECIPIENT=$SMTP_RECIPIENT SMTP_PASSWORD=$SMTP_PASSWORD SMTP_USERNAME=$SMTP_USERNAME ./app &
+  docker run yurashni/flowers-app:0.4.5 -p 8080:8080 \
+    -e SMTP_RECIPIENT=$SMTP_RECIPIENT \
+    -e SMTP_PASSWORD=$SMTP_PASSWORD \
+    -e SMTP_USERNAME=$SMTP_USERNAME \
+    -e POSTGRES_PASSWORD=postgres \
+    -e POSTGRES_USER=postgres \
+    -e POSTGRES_HOST=db \
+    -e POSTGRES_PORT=5432 \
+    -e POSTGRES_DB=postgres
 }
 
 function main() {
+  echo "START USER DATA"
+
   verifyInstanceHasOutboundConnection
-  installGit
-  cloneFlowersRepo
+  installDocker
   runApp
 
   echo "END USER DATA"
