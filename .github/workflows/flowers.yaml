@@ -26,7 +26,7 @@ jobs:
         run: docker build -t flowers-app .
 
   docker-push:
-    if: github.event.release.created
+    if: github.event_name == 'release'
     name: Push Docker image to Docker Hub 🚀
     runs-on: ubuntu-latest
     steps:
