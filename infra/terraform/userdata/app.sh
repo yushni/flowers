@@ -17,6 +17,8 @@ function installDocker() {
   yum update -y
   echo "INSTALLING Docker"
   yum install docker -y
+  echo "STARTING Docker"
+  systemctl start docker
 }
 
 function runApp() {
@@ -26,15 +28,16 @@ function runApp() {
   SMTP_RECIPIENT=$(aws ssm get-parameter --name "/smtp/recipient" --region ${REGION} --with-decryption --query "Parameter.Value" --output text)
 
   echo "RUN POSTGRES"
-  docker run postgres -p 5432:5432 \
+  docker run -d -p 5432:5432 \
     -e POSTGRES_PASSWORD=postgres \
     -e POSTGRES_USER=postgres \
     -e POSTGRES_HOST=db \
     -e POSTGRES_PORT=5432 \
-    -e POSTGRES_DB=postgres
+    -e POSTGRES_DB=postgres \
+    postgres
 
   echo "RUN THE APP"
-  docker run yurashni/flowers-app:0.4.5 -p 8080:8080 \
+  docker run -d -p 80:80 \
     -e SMTP_RECIPIENT=$SMTP_RECIPIENT \
     -e SMTP_PASSWORD=$SMTP_PASSWORD \
     -e SMTP_USERNAME=$SMTP_USERNAME \
@@ -42,7 +45,8 @@ function runApp() {
     -e POSTGRES_USER=postgres \
     -e POSTGRES_HOST=db \
     -e POSTGRES_PORT=5432 \
-    -e POSTGRES_DB=postgres
+    -e POSTGRES_DB=postgres \
+    yurashni/flowers-app:0.4.5
 }
 
 function main() {

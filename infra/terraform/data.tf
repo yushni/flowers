@@ -3,8 +3,8 @@ data "aws_ami" "amzn-linux-2023-ami" {
   owners      = ["amazon"]
 
   filter {
-    name   = "name"
-    values = ["al2023-ami-2023.*-x86_64"]
+    name   = "image-id"
+    values = ["ami-06801a226628c00ce"]
   }
 }
 

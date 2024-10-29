@@ -150,3 +150,7 @@ resource "aws_lb_listener" "app-https" {
     target_group_arn = aws_lb_target_group.app.arn
   }
 }
+
+output "app_lb_dns" {
+  value = aws_lb.app.dns_name
+}

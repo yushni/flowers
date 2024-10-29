@@ -22,7 +22,7 @@ function enableIpForwarding() {
 function configureNAT() {
   echo "Configuring NAT..."
 
-  /sbin/iptables -t nat -A POSTROUTING -o enX0 -j MASQUERADE
+  /sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
   /sbin/iptables -F FORWARD
   service iptables save
 
