@@ -23,7 +23,7 @@ function installDocker() {
 
 function runApp() {
   echo "RUN THE APP"
-  docker run -d -p 80:80 -e ${REGION} yurashni/flowers-app:0.4.6
+  docker run -d -p 80:80 -e AWS_REGION=${REGION} yurashni/flowers-app:0.4.7
 }
 
 function main() {

@@ -26,12 +26,12 @@ resource "aws_launch_template" "nat" {
   }))
 }
 
-resource "aws_lb_target_group" "nat" {
-  name     = "${local.resource_prefix}-nat"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
-}
+# resource "aws_lb_target_group" "nat" {
+#   name     = "${local.resource_prefix}-nat"
+#   port     = 80
+#   protocol = "HTTP"
+#   vpc_id   = aws_vpc.main.id
+# }
 
 resource "aws_autoscaling_group" "nat" {
   min_size                  = 1
@@ -41,8 +41,6 @@ resource "aws_autoscaling_group" "nat" {
   health_check_type         = "EC2"
   health_check_grace_period = 300
   termination_policies      = ["OldestInstance"]
-  target_group_arns         = [aws_lb_target_group.nat.arn]
-
 
   tag {
     key                 = "Name"
@@ -50,14 +48,9 @@ resource "aws_autoscaling_group" "nat" {
     propagate_at_launch = true
   }
 
-  instance_refresh {
-    strategy = "Rolling"
-    triggers = ["launch_template"]
-  }
-
   launch_template {
     id      = aws_launch_template.nat.id
-    version = "$Latest"
+    version = aws_launch_template.nat.default_version
   }
 }
 
@@ -104,7 +97,7 @@ resource "aws_autoscaling_group" "app" {
   health_check_grace_period = 300
   termination_policies      = ["OldestInstance"]
   target_group_arns         = [aws_lb_target_group.app.arn]
-  depends_on                = [aws_autoscaling_group.nat]
+  depends_on                = [aws_autoscaling_group.nat, aws_db_instance.app-3]
 
   tag {
     key                 = "Name"
