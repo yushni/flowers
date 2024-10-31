@@ -47,29 +47,23 @@ resource "random_password" "password" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-resource "random_password" "username" {
-  length           = 16
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
+resource "random_string" "username" {
+  length  = 16
+  special = false
 }
 
-resource "random_password" "db" {
-  length           = 16
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
-}
-
-resource "aws_db_instance" "app-2" {
+resource "aws_db_instance" "app-3" {
   allocated_storage   = 10
-  db_name             = random_password.db.result
+  db_name             = "app"
   engine              = "postgres"
   engine_version      = "16.3"
   instance_class      = "db.t3.micro"
-  username            = random_password.username.result
+  username            = random_string.username.result
   password            = random_password.password.result
   skip_final_snapshot = true
-  identifier          = "app-2"
+  identifier          = "app-3"
   publicly_accessible = true
+  apply_immediately = true
 
 #   db_subnet_group_name   = aws_db_subnet_group.app.name
 #   vpc_security_group_ids = [aws_security_group.rds.id]
@@ -83,7 +77,7 @@ resource "aws_ssm_parameter" "db-password" {
   name        = "/db/password"
   description = "The password for the database"
   type        = "SecureString"
-  value       = aws_db_instance.app-2.password
+  value       = aws_db_instance.app-3.password
 
   tags = {
     environment = var.env
@@ -94,7 +88,7 @@ resource "aws_ssm_parameter" "db-username" {
   name        = "/db/username"
   description = "The username for the database"
   type        = "SecureString"
-  value       = aws_db_instance.app-2.username
+  value       = aws_db_instance.app-3.username
 
   tags = {
     environment = var.env
@@ -105,7 +99,7 @@ resource "aws_ssm_parameter" "db-host" {
   name        = "/db/host"
   description = "The host for the database"
   type        = "SecureString"
-  value       = aws_db_instance.app-2.address
+  value       = aws_db_instance.app-3.address
 
   tags = {
     environment = var.env
@@ -116,7 +110,7 @@ resource "aws_ssm_parameter" "db-port" {
   name        = "/db/port"
   description = "The port for the database"
   type        = "SecureString"
-  value       = aws_db_instance.app-2.port
+  value       = aws_db_instance.app-3.port
 
   tags = {
     environment = var.env
@@ -127,7 +121,7 @@ resource "aws_ssm_parameter" "db-name" {
   name        = "/db/name"
   description = "The name for the database"
   type        = "SecureString"
-  value       = aws_db_instance.app-2.db_name
+  value       = aws_db_instance.app-3.db_name
 
   tags = {
     environment = var.env
