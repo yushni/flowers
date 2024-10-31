@@ -104,7 +104,7 @@ resource "aws_autoscaling_group" "app" {
   health_check_grace_period = 300
   termination_policies      = ["OldestInstance"]
   target_group_arns         = [aws_lb_target_group.app.arn]
-  depends_on = [aws_autoscaling_group.nat]
+  depends_on                = [aws_autoscaling_group.nat]
 
   tag {
     key                 = "Name"

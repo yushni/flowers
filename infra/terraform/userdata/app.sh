@@ -22,31 +22,8 @@ function installDocker() {
 }
 
 function runApp() {
-  echo "RETRIEVING SMTP PARAMETERS"
-  SMTP_PASSWORD=$(aws ssm get-parameter --name "/smtp/password" --region ${REGION} --with-decryption --query "Parameter.Value" --output text)
-  SMTP_USERNAME=$(aws ssm get-parameter --name "/smtp/username" --region ${REGION} --with-decryption --query "Parameter.Value" --output text)
-  SMTP_RECIPIENT=$(aws ssm get-parameter --name "/smtp/recipient" --region ${REGION} --with-decryption --query "Parameter.Value" --output text)
-
-  echo "RUN POSTGRES"
-  docker run -d -p 5432:5432 \
-    -e POSTGRES_PASSWORD=postgres \
-    -e POSTGRES_USER=postgres \
-    -e POSTGRES_HOST=db \
-    -e POSTGRES_PORT=5432 \
-    -e POSTGRES_DB=postgres \
-    postgres
-
   echo "RUN THE APP"
-  docker run -d -p 80:80 \
-    -e SMTP_RECIPIENT=$SMTP_RECIPIENT \
-    -e SMTP_PASSWORD=$SMTP_PASSWORD \
-    -e SMTP_USERNAME=$SMTP_USERNAME \
-    -e POSTGRES_PASSWORD=postgres \
-    -e POSTGRES_USER=postgres \
-    -e POSTGRES_HOST=db \
-    -e POSTGRES_PORT=5432 \
-    -e POSTGRES_DB=postgres \
-    yurashni/flowers-app:0.4.5
+  docker run -d -p 80:80 -e ${REGION} yurashni/flowers-app:0.4.6
 }
 
 function main() {
