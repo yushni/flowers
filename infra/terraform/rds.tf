@@ -1,8 +1,3 @@
-// todo: add the RDS module here
-//   use: dbsubnet-group
-
-
-
 ### DATABASE
 resource "aws_security_group" "rds" {
   name        = "terraform_rds_security_group"

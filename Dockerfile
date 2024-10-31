@@ -12,6 +12,7 @@ WORKDIR /app
 
 COPY ./public ./public
 COPY --from=builder /app/flowers ./
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 EXPOSE 80
 ENTRYPOINT ["./flowers"]
