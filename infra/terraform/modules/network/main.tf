@@ -1,10 +1,10 @@
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
-  enable_dns_support = true
+  enable_dns_support   = true
 
   tags = {
-    Name = "${local.resource_prefix}-main"
+    Name = "${var.resource_prefix}-main"
   }
 }
 
@@ -12,7 +12,7 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${local.resource_prefix}-main"
+    Name = "${var.resource_prefix}-main"
   }
 }
 
@@ -23,7 +23,7 @@ resource "aws_subnet" "main_public_1a" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${local.resource_prefix}-main-public-1a"
+    Name = "${var.resource_prefix}-main-public-1a"
   }
 }
 
@@ -34,7 +34,7 @@ resource "aws_subnet" "main_public_1b" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${local.resource_prefix}-main-public-1b"
+    Name = "${var.resource_prefix}-main-public-1b"
   }
 }
 
@@ -44,7 +44,7 @@ resource "aws_subnet" "main_private_1a" {
   cidr_block        = "10.0.3.0/24"
 
   tags = {
-    Name = "${local.resource_prefix}-main-private-1a"
+    Name = "${var.resource_prefix}-main-private-1a"
   }
 }
 
@@ -54,7 +54,7 @@ resource "aws_subnet" "main_private_1b" {
   cidr_block        = "10.0.4.0/24"
 
   tags = {
-    Name = "${local.resource_prefix}-main-private-1b"
+    Name = "${var.resource_prefix}-main-private-1b"
   }
 }
 
@@ -67,7 +67,7 @@ resource "aws_default_route_table" "main_public" {
   }
 
   tags = {
-    Name = "${local.resource_prefix}-main-public"
+    Name = "${var.resource_prefix}-main-public"
   }
 }
 
@@ -85,7 +85,7 @@ resource "aws_route_table" "main_private" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${local.resource_prefix}-main-private"
+    Name = "${var.resource_prefix}-main-private"
   }
 }
 
@@ -115,44 +115,4 @@ resource "aws_security_group" "allow_all_to_all" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-resource "aws_lb" "app" {
-  name               = "${local.resource_prefix}-app"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.allow_all_to_all.id]
-  subnets            = [aws_subnet.main_public_1a.id, aws_subnet.main_public_1b.id]
-
-  tags = {
-    Name = "${local.resource_prefix}-app"
-  }
-}
-
-resource "aws_lb_listener" "app-http" {
-  load_balancer_arn = aws_lb.app.arn
-  port              = "80"
-  protocol          = "HTTP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
-  }
-}
-
-resource "aws_lb_listener" "app-https" {
-  load_balancer_arn = aws_lb.app.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = data.aws_acm_certificate.semycvitka.arn
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
-  }
-}
-
-output "app_lb_dns" {
-  value = aws_lb.app.dns_name
 }
