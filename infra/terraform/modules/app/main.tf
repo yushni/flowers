@@ -4,7 +4,9 @@ resource "aws_launch_template" "app" {
   instance_type          = var.instance_type
   update_default_version = true
 
-  vpc_security_group_ids = [var.app_security_group_id]
+  vpc_security_group_ids = [
+    aws_security_group.app.id,
+  ]
 
   iam_instance_profile {
     name = aws_iam_instance_profile.app.name
@@ -61,8 +63,10 @@ resource "aws_lb" "app" {
   name               = "${var.resource_prefix}-app"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [var.lb_security_group_id]
   subnets            = var.lb_subnet_ids
+  security_groups = [
+    aws_security_group.lb.id,
+  ]
 
   tags = {
     Name = "${var.resource_prefix}-app"

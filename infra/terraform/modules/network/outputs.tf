@@ -18,10 +18,6 @@ output "private_subnet_1b_id" {
   value = aws_subnet.main_private_1b.id
 }
 
-output "allow_all_to_all_sg_id" {
-  value = aws_security_group.allow_all_to_all.id
-}
-
 output "vpc_id" {
   value = aws_vpc.main.id
 }

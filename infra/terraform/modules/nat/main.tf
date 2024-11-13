@@ -5,7 +5,7 @@ resource "aws_launch_template" "nat" {
   update_default_version = true
 
   vpc_security_group_ids = [
-    var.security_group_id,
+    aws_security_group.nat.id,
   ]
 
   iam_instance_profile {
@@ -29,7 +29,7 @@ resource "aws_autoscaling_group" "nat" {
   min_size                  = 1
   max_size                  = 1
   desired_capacity          = 1
-  vpc_zone_identifier       = [var.subnet_id]
+  vpc_zone_identifier       = var.subnet_ids
   health_check_type         = "EC2"
   health_check_grace_period = 300
   termination_policies      = ["OldestInstance"]

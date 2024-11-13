@@ -13,18 +13,18 @@ variable "instance_type" {
   type        = string
 }
 
-variable "subnet_id" {
-  description = "The Subnet ID"
+variable "vpc_id" {
+  description = "The VPC ID"
   type        = string
+}
+
+variable "subnet_ids" {
+  description = "The Subnet IDs"
+  type        = list(string)
 }
 
 variable "route_table_id" {
   description = "The Route Table ID"
-  type        = string
-}
-
-variable "security_group_id" {
-  description = "The Security Group ID"
   type        = string
 }
 

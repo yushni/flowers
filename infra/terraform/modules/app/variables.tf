@@ -28,16 +28,6 @@ variable "app_subnet_ids" {
   type        = list(string)
 }
 
-variable "app_security_group_id" {
-  description = "The Security Group ID"
-  type        = string
-}
-
-variable "lb_security_group_id" {
-  description = "The Security Group ID"
-  type        = string
-}
-
 variable "lb_subnet_ids" {
   description = "The Subnet IDs"
   type        = list(string)
